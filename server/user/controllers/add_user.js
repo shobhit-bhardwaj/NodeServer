@@ -1,28 +1,31 @@
 var userServices = require('../services/index');
-var responseMessage = require("../../utils/response_message");
 var responseCode = require("../../utils/response_code");
 var logger = require("../../utils/logger");
 var crypto = require('crypto');
 
+/**
+ * Add User API
+ * 
+ * METHOD	-	POST
+ * URL		-	http://<IP>:<PORT>/addUser
+ * REQUEST	-	{"userName":"Shobhit", "password":"12345", "mobileNumber":"9988776655", "emailId":"shobhit.bhardwaj@gmail.com", "status":"ACTIVE"}
+ * 
+ */
 function addUser(request, response, next) {
 	var requestData = request.body;
-	// console.log("addUser API :- Request - %j", requestData);
 
-	var responseData = new Object();
 	userServices.addUser(requestData, function(error, data) {
-		if (error === null) {
+		var responseData = new Object();
+
+		if (error) {
 			responseData.responseCode = data.responseCode;
-			responseData.responseData = data.responseData;
-		} else if(data.responseCode !== responseCode.SUCCESS) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseData = {};
-			responseData.responseData.message = responseMessage[data.responseCode];
+			responseData.responseMessage = data.responseMessage;
 		} else {
 			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
 		}
 
-		logger.info("addUser API :- Response -", responseData);
 		response.json(responseData);
 	});
 }
@@ -41,12 +44,10 @@ if (require.main === module) {
 		};
 
 		var requestObject = new Object();
-		requestObject.userName = "userName";
-		requestObject.emailId = "emailId";
+		requestObject.userName = "shobhit";
+		requestObject.password = "12345";
 		requestObject.mobileNumber = "9988776655";
-		requestObject.password = crypto.createHash('sha256').update('12345678').digest("hex");
-		requestObject.firstName = "firstName";
-		requestObject.lastName = "lastName";
+		requestObject.emailId = "shobhit.bhardwaj@gmail.com";
 		requestObject.status = "ACTIVE";
 		console.log(requestObject);
 

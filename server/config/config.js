@@ -9,11 +9,11 @@ var config = {
 		},
 
 		mongoConfig : {
-			urlString : 'mongodb://localhost/PokerNS'
+			urlString : 'mongodb://l4dvidap6393/NodeServer'
 		},
 
 		logConfig : {
-			log_file_path : '../../log/poker_node_log.log',
+			log_file_path : '../../log/node_app_log.log',
 			file_level : 'info',
 			file_max_size : 5242880,	//5MB
 			file_max_files : 5,
@@ -29,11 +29,11 @@ var config = {
 		},
 
 		mongoConfig : {
-			urlString : 'mongodb://localhost/PokerNS'
+			urlString : 'mongodb://localhost/NodeServer'
 		},
 
 		logConfig : {
-			log_file_path : '../../log/poker_node_log.log',
+			log_file_path : '../../log/node_app_log.log',
 			file_level : 'info',
 			file_max_size : 5242880,	//5MB
 			file_max_files : 5,
