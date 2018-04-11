@@ -9,7 +9,7 @@ var config = {
 		},
 
 		mongoConfig : {
-			urlString : 'mongodb://l4dvidap6393/NodeServer'
+			urlString : 'mongodb://localhost/NodeServer'
 		},
 
 		logConfig : {
