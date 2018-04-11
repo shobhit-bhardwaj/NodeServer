@@ -1,19 +1,19 @@
-var userServices = require('../services/index');
+var userServices = require("../services/index");
 var responseCode = require("../../utils/response_code");
 var logger = require("../../utils/logger");
 
 /**
- * Add User API
+ * Find User By Property API
  * 
  * METHOD	-	POST
- * URL		-	http://<IP>:<PORT>/addUser
- * REQUEST	-	{"userName":"Shobhit", "password":"12345", "mobileNumber":"9988776655", "emailId":"shobhit.bhardwaj@gmail.com", "status":"ACTIVE"}
+ * URL		-	http://<IP>:<PORT>/findUserByProperty
+ * REQUEST	-	{"userName":"Shobhit", "mobileNumber":"9988776655", "emailId":"shobhit.bhardwaj@gmail.com", "status":"ACTIVE"}
  * 
  */
-function addUser(request, response, next) {
-	var requestData = request.body;
+function findUserByProperty(request, response, next) {
+	var requestObject = request.body;
 
-	userServices.addUser(requestData, function(error, data) {
+	userServices.findUserByProperty(requestObject, function(error, data) {
 		var responseData = new Object();
 
 		if (error) {
@@ -25,12 +25,12 @@ function addUser(request, response, next) {
 			responseData.responseData = data.responseData;
 		}
 
-		logger.info("addUser API - Response Data - ", responseData);
+		logger.info("findUserByProperty - Response Data - ", responseData);
 		response.json(responseData);
 	});
 }
 
-module.exports = addUser;
+module.exports = findUserByProperty;
 
 // Unit Test Case
 if (require.main === module) {
@@ -44,13 +44,12 @@ if (require.main === module) {
 
 		var requestObject = new Object();
 		requestObject.userName = "Shobhit";
-		requestObject.password = "12345";
-		requestObject.mobileNumber = "9988776655";
-		requestObject.emailId = "shobhit.bhardwaj@gmail.com";
-		requestObject.status = "ACTIVE";
+		//requestObject.mobileNumber = "9988776655";
+		//requestObject.emailId = "shobhit.bhardwaj@gmail.com";
+		//requestObject.status = "ACTIVE";
 		console.log("Request Data - ", requestObject);
 
 		request.body = requestObject;
-		addUser(request, response);
+		findUserByProperty(request, response);
 	})();
 }
