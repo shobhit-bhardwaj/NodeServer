@@ -5,13 +5,13 @@ var logger = require("../../utils/logger");
 /**
  * Find User List API
  * 
- * METHOD	-	POST
- * URL		-	http://<IP>:<PORT>/findUserList
- * REQUEST	-	{"status":"ACTIVE"}
+ * METHOD	-	GET
+ * URL		-	http://<IP>:<PORT>/userList
+ * REQUEST	-	?status=ACTIVE
  * 
  */
 function findUserList(request, response, next) {
-	var requestObject = request.body;
+	var requestObject = request.query;
 
 	userServices.findUserList(requestObject, function(error, data) {
 		var responseData = new Object();

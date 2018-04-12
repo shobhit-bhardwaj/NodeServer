@@ -5,8 +5,8 @@ var logger = require("../../utils/logger");
 /**
  * Delete User API
  * 
- * METHOD	-	POST
- * URL		-	http://<IP>:<PORT>/deleteUser
+ * METHOD	-	DELETE
+ * URL		-	http://<IP>:<PORT>/user
  * REQUEST	-	{"userName":"Shobhit"}
  * 
  */

@@ -2,9 +2,9 @@ var logRequest = require('../utils/log_req');
 var user = require('./controllers/index');
 
 module.exports = function(app) {
-	app.post("/addUser", logRequest, user.addUser);
-	app.post("/findUserByProperty", logRequest, user.findUserByProperty);
-	app.post("/findUserList", logRequest, user.findUserList);
-	app.post("/updateUser", logRequest, user.updateUser);
-	app.post("/deleteUser", logRequest, user.deleteUser);
+	app.post("/user", logRequest, user.addUser);
+	app.get("/user", logRequest, user.findUserByProperty);
+	app.get("/userList", logRequest, user.findUserList);
+	app.put("/user", logRequest, user.updateUser);
+	app.delete("/user", logRequest, user.deleteUser);
 }

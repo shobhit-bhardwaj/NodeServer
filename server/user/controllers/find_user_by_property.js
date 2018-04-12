@@ -5,13 +5,13 @@ var logger = require("../../utils/logger");
 /**
  * Find User By Property API
  * 
- * METHOD	-	POST
- * URL		-	http://<IP>:<PORT>/findUserByProperty
- * REQUEST	-	{"userName":"Shobhit", "mobileNumber":"9988776655", "emailId":"shobhit.bhardwaj@gmail.com", "status":"ACTIVE"}
+ * METHOD	-	GET
+ * URL		-	http://<IP>:<PORT>/user
+ * REQUEST	-	?userName=Shobhit&mobileNumber=9988776655&emailId=shobhit.bhardwaj@gmail.com&status=ACTIVE
  * 
  */
 function findUserByProperty(request, response, next) {
-	var requestObject = request.body;
+	var requestObject = request.query;
 
 	userServices.findUserByProperty(requestObject, function(error, data) {
 		var responseData = new Object();

@@ -6,7 +6,7 @@ var logger = require("../../utils/logger");
  * Add User API
  * 
  * METHOD	-	POST
- * URL		-	http://<IP>:<PORT>/addUser
+ * URL		-	http://<IP>:<PORT>/user
  * REQUEST	-	{"userName":"Shobhit", "password":"12345", "mobileNumber":"9988776655", "emailId":"shobhit.bhardwaj@gmail.com", "status":"ACTIVE"}
  * 
  */
