@@ -46,7 +46,7 @@ if (require.main === module) {
 		requestObject.status = "ACTIVE";
 		console.log("Request Data - ", requestObject);
 
-		request.body = requestObject;
+		request.query = requestObject;
 		findUserList(request, response);
 	})();
 }

@@ -6,12 +6,12 @@ var logger = require("../../utils/logger");
  * Find User By Property API
  * 
  * METHOD	-	GET
- * URL		-	http://<IP>:<PORT>/user
- * REQUEST	-	?userName=Shobhit&mobileNumber=9988776655&emailId=shobhit.bhardwaj@gmail.com&status=ACTIVE
+ * URL		-	http://<IP>:<PORT>/user/Shobhit
  * 
  */
 function findUserByProperty(request, response, next) {
-	var requestObject = request.query;
+	var requestObject = new Object();
+	requestObject.userName = request.params.userName;
 
 	userServices.findUserByProperty(requestObject, function(error, data) {
 		var responseData = new Object();
@@ -25,7 +25,7 @@ function findUserByProperty(request, response, next) {
 			responseData.responseData = data.responseData;
 		}
 
-		logger.info("findUserByProperty - Response Data - ", responseData);
+		logger.info("findUserByUserName - Response Data - ", responseData);
 		response.json(responseData);
 	});
 }
@@ -44,12 +44,9 @@ if (require.main === module) {
 
 		var requestObject = new Object();
 		requestObject.userName = "Shobhit";
-		//requestObject.mobileNumber = "9988776655";
-		//requestObject.emailId = "shobhit.bhardwaj@gmail.com";
-		//requestObject.status = "ACTIVE";
 		console.log("Request Data - ", requestObject);
 
-		request.query = requestObject;
+		request.params = requestObject;
 		findUserByProperty(request, response);
 	})();
 }
