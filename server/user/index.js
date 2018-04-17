@@ -18,6 +18,7 @@ var user = require('./controllers/index');
  *         type: string
  *       status:
  *         type: string
+ *         enum: [ACTIVE, INACTIVE]
  *       createAt:
  *         type: string
  *         format: date
@@ -37,7 +38,7 @@ module.exports = function(app) {
 	 *     produces:
 	 *       - application/json
 	 *     parameters:
-	 *       - name: User
+	 *       - name: User Model
 	 *         description: User Object
 	 *         in: body
 	 *         required: true
@@ -45,19 +46,32 @@ module.exports = function(app) {
 	 *           $ref: '#/definitions/users'
 	 *     responses:
 	 *       200:
-	 *         description: Successfully created
+	 *         description: User Created Successfully
 	 */
 	app.post("/user", logRequest, user.addUser);
 
 	/**
 	 * @swagger
-	 * /user:
+	 * /user?userName={userName}&mobileNumber={mobileNumber}&emailId={emailId}&status={status}:
 	 *   get:
 	 *     tags:
 	 *       - users
 	 *     description: Returns Users By Property
 	 *     produces:
 	 *       - application/json
+	 *     parameters:
+	 *       - name: userName
+	 *         in: query
+	 *         required: false
+	 *       - name: mobileNumber
+	 *         in: query
+	 *         required: false
+	 *       - name: emailId
+	 *         in: query
+	 *         required: false
+	 *       - name: status
+	 *         in: query
+	 *         required: false
 	 *     responses:
 	 *       200:
 	 *         description: An Array of Users
@@ -72,12 +86,12 @@ module.exports = function(app) {
 	 *   get:
 	 *     tags:
 	 *       - users
-	 *     description: Returns All Users
+	 *     description: Returns User By Username
 	 *     produces:
 	 *       - application/json
 	 *     parameters:
 	 *       - name: userName
-	 *         description: User's userName
+	 *         description: User Name
 	 *         in: path
 	 *         required: true
 	 *         type: string
@@ -106,22 +120,26 @@ module.exports = function(app) {
 
 	/**
 	 * @swagger
-	 * /user/:
+	 * /user/{userName}:
 	 *   put:
 	 *     tags:
 	 *     	 - users
 	 *     description: Updates a Single User
 	 *     produces: application/json
 	 *     parameters:
+	 *       - name: userName
+	 *         in: path
+	 *         required: true
 	 *       - name: User
-	 *         description: Fields for the User Resource
+	 *         in: body
+	 *         description: Fields for the user resource
 	 *         schema:
-	 *           $ref: '#/definitions/user'
+	 *           $ref: '#/definitions/users'
 	 *     responses:
 	 *       200:
 	 *         description: Successfully updated
 	 */
-	app.put("/user", logRequest, user.updateUser);
+	app.put("/user/:userName", logRequest, user.updateUser);
 
 	/**
 	 * @swagger
@@ -133,11 +151,12 @@ module.exports = function(app) {
 	 *     produces:
 	 *       - application/json
 	 *     parameters:
-	 *       - name: userName
-	 *         description: User's userName
-	 *         in: path
+	 *       - name: User
+	 *         description: User's User Name
+	 *         in: body
 	 *         required: true
-	 *         type: string
+	 *         schema:
+	 *           $ref: '#/definitions/users'
 	 *     responses:
 	 *       200:
 	 *         description: Successfully deleted

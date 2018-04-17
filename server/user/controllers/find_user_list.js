@@ -11,9 +11,9 @@ var logger = require("../../utils/logger");
  * 
  */
 function findUserList(request, response, next) {
-	var requestObject = request.query;
+	var requestData = request.query;
 
-	userServices.findUserList(requestObject, function(error, data) {
+	userServices.findUserList(requestData, function(error, data) {
 		var responseData = new Object();
 
 		if (error) {

@@ -6,12 +6,13 @@ var logger = require("../../utils/logger");
  * Update User API
  * 
  * METHOD	-	PUT
- * URL		-	http://<IP>:<PORT>/user
+ * URL		-	http://<IP>:<PORT>/user/Shobhit
  * REQUEST	-	{"userName":"Shobhit", "password":"12345", "mobileNumber":"9988776655", "emailId":"shobhit.bhardwaj@gmail.com", "status":"ACTIVE"}
  * 
  */
 function updateUser(request, response, next) {
 	var requestData = request.body;
+	requestData.userName = request.params.userName;
 
 	userServices.updateUser(requestData, function(error, data) {
 		var responseData = new Object();

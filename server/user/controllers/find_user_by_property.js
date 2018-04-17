@@ -11,9 +11,9 @@ var logger = require("../../utils/logger");
  * 
  */
 function findUserByProperty(request, response, next) {
-	var requestObject = request.query;
+	var requestData = request.query;
 
-	userServices.findUserByProperty(requestObject, function(error, data) {
+	userServices.findUserByProperty(requestData, function(error, data) {
 		var responseData = new Object();
 
 		if (error) {

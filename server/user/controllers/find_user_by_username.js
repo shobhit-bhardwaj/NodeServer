@@ -10,10 +10,10 @@ var logger = require("../../utils/logger");
  * 
  */
 function findUserByProperty(request, response, next) {
-	var requestObject = new Object();
-	requestObject.userName = request.params.userName;
+	var requestData = new Object();
+	requestData.userName = request.params.userName;
 
-	userServices.findUserByProperty(requestObject, function(error, data) {
+	userServices.findUserByProperty(requestData, function(error, data) {
 		var responseData = new Object();
 
 		if (error) {
