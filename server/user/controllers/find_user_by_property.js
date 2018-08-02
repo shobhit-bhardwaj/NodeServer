@@ -13,21 +13,25 @@ var logger = require("../../utils/logger");
 function findUserByProperty(request, response, next) {
 	var requestData = request.query;
 
-	userServices.findUserByProperty(requestData, function(error, data) {
-		var responseData = new Object();
-
-		if (error) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseMessage = data.responseMessage;
-		} else {
+	var responseData = new Object();
+	userServices.findUserByProperty(requestData)
+		.then((data) => {
 			responseData.responseCode = data.responseCode;
 			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
-		}
 
-		logger.info("findUserByProperty - Response Data - ", responseData);
-		response.json(responseData);
-	});
+			logger.info("findUserByProperty API - Response Data - ", responseData);
+			response.json(responseData);
+		})
+		.catch((data) => {
+			logger.info("Error - ", data.error);
+
+			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
+
+			logger.info("findUserByProperty API - Response Data - ", responseData);
+			response.json(responseData);
+		});
 }
 
 module.exports = findUserByProperty;

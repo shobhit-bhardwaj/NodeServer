@@ -14,21 +14,25 @@ function updateUser(request, response, next) {
 	var requestData = request.body;
 	requestData.userName = request.params.userName;
 
-	userServices.updateUser(requestData, function(error, data) {
-		var responseData = new Object();
-
-		if (error) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseMessage = data.responseMessage;
-		} else {
+	var responseData = new Object();
+	userServices.updateUser(requestData)
+		.then((data) => {
 			responseData.responseCode = data.responseCode;
 			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
-		}
 
-		logger.info("updateUser API - Response Data - ", responseData);
-		response.json(responseData);
-	});
+			logger.info("updateUser API - Response Data - ", responseData);
+			response.json(responseData);
+		})
+		.catch((data) => {
+			logger.info("Error - ", data.error);
+
+			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
+
+			logger.info("updateUser API - Response Data - ", responseData);
+			response.json(responseData);
+		});
 }
 
 module.exports = updateUser;
@@ -48,10 +52,11 @@ if (require.main === module) {
 		//requestObject.password = "12345";
 		//requestObject.mobileNumber = "9988776655";
 		//requestObject.emailId = "shobhit.bhardwaj@gmail.com";
-		requestObject.status = "INACTIVE";
+		requestObject.status = "ACTIVE";
 		console.log("Request Data - ", requestObject);
 
 		request.body = requestObject;
+		request.params = requestObject;
 		updateUser(request, response);
 	})();
 }

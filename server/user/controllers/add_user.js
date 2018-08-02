@@ -13,21 +13,25 @@ var logger = require("../../utils/logger");
 function addUser(request, response, next) {
 	var requestData = request.body;
 
-	userServices.addUser(requestData, function(error, data) {
-		var responseData = new Object();
-
-		if (error) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseMessage = data.responseMessage;
-		} else {
+	var responseData = new Object();
+	userServices.addUser(requestData)
+		.then((data) => {
 			responseData.responseCode = data.responseCode;
 			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
-		}
 
-		logger.info("addUser API - Response Data - ", responseData);
-		response.json(responseData);
-	});
+			logger.info("addUser API - Response Data - ", responseData);
+			response.json(responseData);
+		})
+		.catch((data) => {
+			logger.info("Error - ", data.error);
+
+			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
+
+			logger.info("addUser API - Response Data - ", responseData);
+			response.json(responseData);
+		});
 }
 
 module.exports = addUser;

@@ -13,21 +13,25 @@ var logger = require("../../utils/logger");
 function findUserList(request, response, next) {
 	var requestData = request.query;
 
-	userServices.findUserList(requestData, function(error, data) {
-		var responseData = new Object();
-
-		if (error) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseMessage = data.responseMessage;
-		} else {
+	var responseData = new Object();
+	userServices.findUserList(requestData)
+		.then((data) => {
 			responseData.responseCode = data.responseCode;
 			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
-		}
 
-		logger.info("findUserList - Response Data - ", responseData);
-		response.json(responseData);
-	});
+			logger.info("findUserList API - Response Data - ", responseData);
+			response.json(responseData);
+		})
+		.catch((data) => {
+			logger.info("Error - ", data.error);
+
+			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
+
+			logger.info("findUserList API - Response Data - ", responseData);
+			response.json(responseData);
+		});
 }
 
 module.exports = findUserList;

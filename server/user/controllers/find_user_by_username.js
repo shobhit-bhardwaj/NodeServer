@@ -13,21 +13,25 @@ function findUserByProperty(request, response, next) {
 	var requestData = new Object();
 	requestData.userName = request.params.userName;
 
-	userServices.findUserByProperty(requestData, function(error, data) {
-		var responseData = new Object();
-
-		if (error) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseMessage = data.responseMessage;
-		} else {
+	var responseData = new Object();
+	userServices.findUserByProperty(requestData)
+		.then((data) => {
 			responseData.responseCode = data.responseCode;
 			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
-		}
 
-		logger.info("findUserByUserName - Response Data - ", responseData);
-		response.json(responseData);
-	});
+			logger.info("findUserByUserName API - Response Data - ", responseData);
+			response.json(responseData);
+		})
+		.catch((data) => {
+			logger.info("Error - ", data.error);
+
+			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
+
+			logger.info("findUserByUserName API - Response Data - ", responseData);
+			response.json(responseData);
+		});
 }
 
 module.exports = findUserByProperty;

@@ -1,27 +1,26 @@
 var User = require("../models/users");
-var logger = require("../../utils/logger");
 var responseCode = require("../../utils/response_code");
 
-function findUserByProperty(requestObject, callback) {
-	var query = User.find({});
-	if(requestObject.status)
-		query.where("status").equals(requestObject.status);
+function findUserByProperty(requestObject) {
+	return new Promise((resolve, reject) => {
+		var query = User.find({});
+		if(requestObject.status)
+			query.where("status").equals(requestObject.status);
 
-	var responseObject = new Object();
-	query.exec(function (error, data) {
-		if (error) {
-			logger.error(error);
-			responseObject.responseCode = responseCode.MONGO_ERROR.CODE;
-			responseObject.responseMessage = responseCode.MONGO_ERROR.MESSAGE;
-			callback(error, responseObject);
-			return;
-		} else {
-			responseObject.responseCode = responseCode.SUCCESS.CODE;
-			responseObject.responseMessage = responseCode.SUCCESS.MESSAGE;
-			responseObject.responseData = data;
-			callback(null, responseObject);
-			return;
-		}
+		var responseObject = new Object();
+		query.exec(function (error, data) {
+			if (error) {
+				responseObject.error = error;
+				responseObject.responseCode = responseCode.MONGO_ERROR.CODE;
+				responseObject.responseMessage = responseCode.MONGO_ERROR.MESSAGE;
+				reject(responseObject);
+			} else {
+				responseObject.responseCode = responseCode.SUCCESS.CODE;
+				responseObject.responseMessage = responseCode.SUCCESS.MESSAGE;
+				responseObject.responseData = data;
+				resolve(responseObject);
+			}
+		});
 	});
 }
 
@@ -33,8 +32,11 @@ if (require.main === module) {
 	requestObject.status = "ACTIVE";
 	console.log("Request Data - ", requestObject);
 
-	findUserByProperty(requestObject, function(error, responseObject) {
-		console.log("Error - ", error);
-		console.log("responseObject - ", responseObject);
-	});
+	findUserByProperty(requestObject)
+		.then((response) => {
+			console.log("Response - ", response);
+		})
+		.catch((error) => {
+			console.log("Error - ", error);
+		});
 }

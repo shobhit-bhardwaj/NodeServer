@@ -1,32 +1,31 @@
 var User = require("../models/users");
-var logger = require("../../utils/logger");
 var responseCode = require("../../utils/response_code");
 var crypto = require('crypto');
 
-function addUser(requestObject, callback) {
-	var newUser = new User({
-		userName : requestObject.userName,
-		password : crypto.createHash('sha256').update(requestObject.password).digest("hex"),
-		mobileNumber : requestObject.mobileNumber,
-		emailId : requestObject.emailId,
-		status : requestObject.status
-	});
+function addUser(requestObject) {
+	return new Promise((resolve, reject) => {
+		var newUser = new User({
+			userName : requestObject.userName,
+			password : crypto.createHash('sha256').update(requestObject.password).digest("hex"),
+			mobileNumber : requestObject.mobileNumber,
+			emailId : requestObject.emailId,
+			status : requestObject.status
+		});
 
-	var responseObject = new Object();
-	newUser.save(function(error, data) {
-		if (error) {
-			logger.error(error);
-			responseObject.responseCode = responseCode.MONGO_ERROR.CODE;
-			responseObject.responseMessage = responseCode.MONGO_ERROR.MESSAGE;
-			callback(error, responseObject);
-			return;
-		} else {
-			responseObject.responseCode = responseCode.SUCCESS.CODE;
-			responseObject.responseMessage = responseCode.SUCCESS.MESSAGE;
-			responseObject.responseData = data;
-			callback(null, responseObject);
-			return;
-		}
+		var responseObject = new Object();
+		newUser.save(function(error, data) {
+			if (error) {
+				responseObject.error = error;
+				responseObject.responseCode = responseCode.MONGO_ERROR.CODE;
+				responseObject.responseMessage = responseCode.MONGO_ERROR.MESSAGE;
+				reject(responseObject);
+			} else {
+				responseObject.responseCode = responseCode.SUCCESS.CODE;
+				responseObject.responseMessage = responseCode.SUCCESS.MESSAGE;
+				responseObject.responseData = data;
+				resolve(responseObject);
+			}
+		});
 	});
 }
 
@@ -42,8 +41,11 @@ if (require.main === module) {
 	requestObject.status = "ACTIVE";
 	console.log("Request Data - ", requestObject);
 
-	addUser(requestObject, function(error, responseObject) {
-		console.log("Error - ", error);
-		console.log("responseObject - ", responseObject);
-	});
+	addUser(requestObject)
+		.then((response) => {
+			console.log("Response - ", response);
+		})
+		.catch((error) => {
+			console.log("Error - ", error);
+		});
 }

@@ -13,21 +13,25 @@ var logger = require("../../utils/logger");
 function deleteUser(request, response, next) {
 	var requestData = request.body;
 
-	userServices.deleteUser(requestData, function(error, data) {
-		var responseData = new Object();
-
-		if (error) {
-			responseData.responseCode = data.responseCode;
-			responseData.responseMessage = data.responseMessage;
-		} else {
+	var responseData = new Object();
+	userServices.deleteUser(requestData)
+		.then((data) => {
 			responseData.responseCode = data.responseCode;
 			responseData.responseMessage = data.responseMessage;
 			responseData.responseData = data.responseData;
-		}
 
-		logger.info("deleteUser API - Response Data - ", responseData);
-		response.json(responseData);
-	});
+			logger.info("deleteUser API - Response Data - ", responseData);
+			response.json(responseData);
+		})
+		.catch((data) => {
+			logger.info("Error - ", data.error);
+
+			responseData.responseCode = data.responseCode;
+			responseData.responseMessage = data.responseMessage;
+
+			logger.info("deleteUser API - Response Data - ", responseData);
+			response.json(responseData);
+		});
 }
 
 module.exports = deleteUser;
